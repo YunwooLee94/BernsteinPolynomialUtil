@@ -10,12 +10,14 @@ void BernsteinPoly::SetBernsteinCoeff(float bernstein_coeff_[])
     this->bernstein_coeff = bernstein_coeff_;
 }
 
+void BernsteinPoly::SetDegree(int degree_)
+{
+    this->degree = degree_;
+}
+
 int BernsteinPoly::GetDegree() const
 {
-    if(bernstein_coeff==nullptr)
-        return 0;
-    else
-        return sizeof(bernstein_coeff)/sizeof(bernstein_coeff[0])-1;
+    return this->degree;
 }
 
 float BernsteinPoly::getValue(float t)
@@ -51,7 +53,7 @@ BernsteinPoly BernsteinPoly::ElevateDegree(int m)
     for(int i =0;i<poly_order+1;i++)
         delete [] mat[i];
     delete []mat;
-    BernsteinPoly result(this->GetTimeInterval(),dataPtr);
+    BernsteinPoly result(this->GetTimeInterval(),dataPtr,m);
     return result;
 }
 
@@ -116,7 +118,7 @@ BernsteinPoly BernsteinPoly::operator*(const BernsteinPoly &rhs_)
             }
         }
     }
-    BernsteinPoly result(this->GetTimeInterval(),dataPtr);
+    BernsteinPoly result(this->GetTimeInterval(),dataPtr,n_lhs+n_rhs);
     return result;
 }
 
