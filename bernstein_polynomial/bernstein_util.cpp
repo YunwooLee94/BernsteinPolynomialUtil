@@ -22,7 +22,7 @@ int BernsteinPoly::GetDegree() const
 
 float BernsteinPoly::getValue(float t)
 {
-    int poly_order = this->GetDegree();
+    int poly_order = this->degree;
     float value = 0.0f;
     for(int i = 0; i<poly_order+1; i++)
         value+=bernstein_coeff[i]*float(nchoosek(poly_order,i))*(float)pow(t-time_interval[0],i)*pow(time_interval[1]-t,poly_order-i)/(float)pow(time_interval[1]-time_interval[0],poly_order);    
@@ -31,7 +31,7 @@ float BernsteinPoly::getValue(float t)
 
 BernsteinPoly BernsteinPoly::ElevateDegree(int m)
 {
-    int poly_order = this->GetDegree();
+    int poly_order = this->degree;
     float ** mat;
     mat = new float* [poly_order+1];
     for(int i =0;i<poly_order+1;i++)
@@ -59,25 +59,27 @@ BernsteinPoly BernsteinPoly::ElevateDegree(int m)
 
 BernsteinPoly BernsteinPoly::operator+(const BernsteinPoly &rhs_)
 {
-    BernsteinPoly result(*this);
-    int poly_order = result.GetDegree();
+    int poly_order = this->degree;
+    auto *dataPtr = new float[degree+1];
     for(int i = 0;i<poly_order+1;i++)
-        result.bernstein_coeff[i]+=rhs_.bernstein_coeff[i];
+        dataPtr[i] = this->bernstein_coeff[i]+rhs_.bernstein_coeff[i];
+    BernsteinPoly result(this->GetTimeInterval(),dataPtr,poly_order);
     return result;
 }
 
 BernsteinPoly BernsteinPoly::operator-(const BernsteinPoly &rhs_)
 {
-    BernsteinPoly result(*this);
-    int poly_order = result.GetDegree();
+    int poly_order = this->degree;
+    auto *dataPtr = new float[degree+1];
     for(int i = 0;i<poly_order+1;i++)
-        result.bernstein_coeff[i]-=rhs_.bernstein_coeff[i];
+        dataPtr[i] = this->bernstein_coeff[i]-rhs_.bernstein_coeff[i];
+    BernsteinPoly result(this->GetTimeInterval(),dataPtr,poly_order);
     return result;
 }
 
 BernsteinPoly BernsteinPoly::operator*(const BernsteinPoly &rhs_)
 {
-    int n_lhs = this->GetDegree();
+    int n_lhs = this->degree;
     int n_rhs = rhs_.GetDegree();
     float* dataPtr = new float[n_lhs+n_rhs+1];
     if(n_lhs>=n_rhs){
@@ -122,11 +124,11 @@ BernsteinPoly BernsteinPoly::operator*(const BernsteinPoly &rhs_)
     return result;
 }
 
-BernsteinPoly BernsteinPoly::operator*(const float &scalar_)
-{
-    BernsteinPoly result(*this);
-    int poly_order = this->GetDegree();
+BernsteinPoly BernsteinPoly::operator*(const float &scalar_){
+    int poly_order = this->degree;
+    auto *dataPtr = new float[degree+1];
     for(int i = 0;i<poly_order+1;i++)
-        result.bernstein_coeff[i]*=scalar_;
+        dataPtr[i] = this->bernstein_coeff[i]*scalar_;
+    BernsteinPoly result(this->GetTimeInterval(),dataPtr,poly_order);
     return result;
 }

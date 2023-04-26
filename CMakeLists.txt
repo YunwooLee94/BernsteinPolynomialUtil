@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15.0)
-project(simple_package)
-set(PACKAGE_EXPORT_NAME SimplePackage)
+project(bernstein_polynomial_util)
+set(PACKAGE_EXPORT_NAME BernsteinPolynomialUtil)
 set(CMAKE_BUILD_TYPE Release)
 set(SOURCE_FOLDERS "bernstein_polynomial" "math_util")
 
