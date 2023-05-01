@@ -1,13 +1,37 @@
 #include "bernstein_util.hpp"
 
+BernsteinPoly::BernsteinPoly(float time_interval_[], float bernstein_coeff_[], const int & degree_){
+    time_interval[0] = time_interval_[0];
+    time_interval[1] = time_interval_[1];
+    float* new_coeff = new float[degree_+1];
+    degree = degree_;
+    for(int i =0;i<=degree_;i++)
+        new_coeff[i] = bernstein_coeff_[i];
+    bernstein_coeff = new_coeff;
+    delete [] new_coeff; 
+}
+
+
+BernsteinPoly::~BernsteinPoly()
+{
+    // delete [] this->bernstein_coeff;
+    //delete [] time_interval;
+    std::cout<<"Destructor Called"<<std::endl;
+}
+
 void BernsteinPoly::SetTimeInterval(float time_interval_[])
 {
-    this->time_interval = time_interval_;
+    this->time_interval[0] = time_interval_[0];
+    this->time_interval[1] = time_interval_[1];
 }
 
 void BernsteinPoly::SetBernsteinCoeff(float bernstein_coeff_[])
 {
-    this->bernstein_coeff = bernstein_coeff_;
+    float * new_coeff = new float[degree+1];
+    for(int i =0;i<=degree;i++)
+        new_coeff[i] = bernstein_coeff_[i];
+    bernstein_coeff = new_coeff;
+    delete [] new_coeff;    
 }
 
 void BernsteinPoly::SetDegree(int degree_)
